@@ -1,0 +1,19 @@
+# 5by5 International Phone Widget for Jotform
+# Copyright (c) 2026 5by5 Media
+# SPDX-License-Identifier: MIT
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# Markdown uses two trailing spaces at end-of-line as a "hard line break"
+# convention -- stripping trailing whitespace there would silently break
+# that formatting.
+[*.md]
+trim_trailing_whitespace = false

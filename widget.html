@@ -1,0 +1,42 @@
+<!--
+  5by5 International Phone Widget for Jotform
+  Copyright (c) 2026 5by5 Media
+  SPDX-License-Identifier: MIT
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>5by5 International Phone Widget for Jotform</title>
+
+<!-- intl-tel-input styles. Pinned to MAJOR version 29 only (not an exact
+     patch) - jsDelivr resolves this to the newest 29.x.y release, so we
+     pick up non-breaking fixes and libphonenumber metadata refreshes
+     automatically, while still being shielded from v30+ breaking changes.
+     NOTE: published files currently live under dist/ (not build/) - if
+     bumping this pin in the future, re-check the path against that
+     version's own docs, as it has changed before. See README.md for a
+     fuller checklist to run through on any future version bump. -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@29/dist/css/intlTelInput.css">
+
+<!-- This widget's own styling -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="widget-root">
+  <input type="tel" id="phone-input" autocomplete="tel" placeholder="Phone number">
+  <div id="error-msg"></div>
+</div>
+
+<!-- Jotform Custom Widget bridge -->
+<script src="https://js.jotform.com/JotFormCustomWidget.min.js"></script>
+
+<!-- intl-tel-input core -->
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@29/dist/js/intlTelInput.min.js"></script>
+
+<!-- This widget's own logic -->
+<script src="widget.js"></script>
+
+</body>
+</html>

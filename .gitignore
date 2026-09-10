@@ -1,0 +1,147 @@
+# 5by5 International Phone Widget for Jotform
+#
+# OS-specific ignore rules only - no build step here, so no build/dependency
+# artifacts to ignore, and no editor-specific rules either (this project is
+# small and deliberately editor-agnostic).
+#
+# Sourced from https://github.com/github/gitignore (CC0-1.0 licensed),
+# retrieved 2026-09-10. These templates aren't version-tagged upstream (just
+# continuously updated via commits, no formal releases), so a retrieval date
+# is the practical stand-in for a version number. To check for upstream
+# changes since then, compare against each file's own commit history:
+#   Windows: https://github.com/github/gitignore/commits/main/Global/Windows.gitignore
+#   macOS:   https://github.com/github/gitignore/commits/main/Global/macOS.gitignore
+#   Linux:   https://github.com/github/gitignore/commits/main/Global/Linux.gitignore
+#
+# No SPDX/copyright header is applied to this file (unlike this project's
+# other files) since most of its content is directly sourced from the CC0-1.0
+# template above, not original to this project -- the section structure,
+# commentary, and edits (e.g. the two disabled entries further down) are
+# this project's own, but the underlying patterns aren't ours to license.
+
+# ---------------------------------------------------------------
+# Windows
+# ---------------------------------------------------------------
+
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file
+*.stackdump
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# ---------------------------------------------------------------
+# macOS
+# ---------------------------------------------------------------
+
+# General
+.DS_Store
+.localized
+__MACOSX/
+.AppleDouble
+.LSOverride
+
+# The real filename Finder creates for a custom folder icon is "Icon"
+# followed by a literal CR byte -- but our repo's .gitattributes normalizes
+# all files to LF on commit, which would strip that trailing CR, leaving
+# a plain "Icon" pattern that could falsely match any unrelated file or
+# directory literally named "Icon". Rather than keep an active rule that
+# no longer matches what it's meant to (and could match something it
+# isn't), it's disabled here. Custom folder icons are vanishingly unlikely
+# in this repo, so this is a deliberate, low-cost trade-off.
+# Icon
+
+# Resource forks
+._*
+
+# Files and directories that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.com.apple.timemachine.supported
+.PKInstallSandboxManager
+.PKInstallSandboxManager-SystemSoftware
+.hotfiles.btree
+.vol
+.file
+.disk_label*
+lost+found
+
+# Same CR-stripping issue as the Icon entry above -- disabled for the same
+# reason (avoids an active rule that no longer matches its real target and
+# could false-match something unrelated). Even less likely to matter here:
+# this is an HFS+-era file, and HFS+ hasn't been the default macOS
+# filesystem in years.
+# .HFS+ Private Directory Data
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Mac OS 6 to 9
+Desktop DB
+Desktop DF
+TheFindByContentFolder
+TheVolumeSettingsFolder
+.FBCIndex
+.FBCSemaphoreFile
+.FBCLockFolder
+
+# Quota system
+.quota.group
+.quota.user
+.quota.ops.group
+.quota.ops.user
+
+# TimeMachine
+Backups.backupdb
+.MobileBackups
+.MobileBackups.trash
+MobileBackups.trash
+tmbootpicker.efi
+
+# ---------------------------------------------------------------
+# Linux
+# ---------------------------------------------------------------
+
+*~
+
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
+
+# Metadata left by Dolphin file manager, which comes with KDE Plasma
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
+
+# Log files created by default by the nohup command
+nohup.out

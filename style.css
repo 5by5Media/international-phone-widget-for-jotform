@@ -1,0 +1,91 @@
+/*
+ * 5by5 International Phone Widget for Jotform
+ * Copyright (c) 2026 5by5 Media
+ * SPDX-License-Identifier: MIT
+ */
+
+/*
+ * ---------------------------------------------------------------
+ * THEME VARIABLES
+ * ---------------------------------------------------------------
+ * These defaults are overridden two ways (either can be used, or both):
+ *  1. No-code: values entered in the widget's registration/settings
+ *     screen are read via JFCustomWidget.getWidgetSetting() in widget.js
+ *     and written onto :root as inline custom properties at runtime.
+ *  2. Advanced: pasting real CSS into the widget's "Custom CSS" tab
+ *     (wand icon on the field -> Custom CSS) always wins, since Jotform
+ *     injects it into this iframe's <style> after this file loads. You
+ *     can either override these same variables (e.g. "--jfw-accent: #ff6600;")
+ *     or target #phone-input directly for full control. For the
+ *     intl-tel-input dropdown/flag/icon styling itself, prefer its own
+ *     documented --iti-* CSS variables (see https://intl-tel-input.com/docs/theming)
+ *     over targeting its internal .iti__* class names directly, since the
+ *     variables are the library's stable, intended customization surface.
+ * ---------------------------------------------------------------
+ */
+:root {
+  --jfw-border-color: #d7dbe0;
+  --jfw-accent: #6c9df0;
+  --jfw-error-color: #e0402d;
+  --jfw-text-color: #2b3242;
+  --jfw-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --jfw-font-size: 15px;
+  --jfw-height: 40px;
+  --jfw-radius: 6px;
+  --jfw-bg: #ffffff;
+  --jfw-accent-shadow: rgba(108, 157, 240, 0.18);
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--jfw-font);
+  color: var(--jfw-text-color);
+  background: transparent;
+}
+#widget-root {
+  padding: 4px 2px 6px 2px;
+}
+.iti {
+  width: 100%;
+  display: block;
+}
+#phone-input {
+  width: 100%;
+  height: var(--jfw-height);
+  font-size: var(--jfw-font-size);
+  font-family: var(--jfw-font);
+  color: var(--jfw-text-color);
+  background: var(--jfw-bg);
+  /* No left padding set here on purpose: intl-tel-input (v29+) applies its
+     own left padding as an inline style, sized to fit the selected-country
+     button, and inline styles always win over anything set here. */
+  padding: 8px 12px;
+  border: 1px solid var(--jfw-border-color);
+  border-radius: var(--jfw-radius);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+#phone-input:focus {
+  border-color: var(--jfw-accent);
+  box-shadow: 0 0 0 3px var(--jfw-accent-shadow);
+}
+#phone-input.error {
+  border-color: var(--jfw-error-color);
+}
+#error-msg {
+  display: none;
+  color: var(--jfw-error-color);
+  font-size: 12.5px;
+  margin-top: 5px;
+  line-height: 1.3;
+}
+#error-msg.visible {
+  display: block;
+}
+/* Horizontal spacing around the flag/country name/icons - this is
+   intl-tel-input's own documented CSS variable (not a raw internal class
+   name), so it's stable across versions in a way a hand-picked selector
+   wouldn't be. Uncomment to adjust from the library's own 10px default:
+.iti { --iti-spacer-horizontal: 10px; }
+*/
