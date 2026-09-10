@@ -1,5 +1,9 @@
 # 5by5 International Phone Widget for Jotform
 
+[![Latest release](https://img.shields.io/github/v/release/5by5Media/international-phone-widget-for-jotform)](https://github.com/5by5Media/international-phone-widget-for-jotform/releases/latest)
+[![License](https://img.shields.io/github/license/5by5Media/international-phone-widget-for-jotform)](./LICENSE)
+[![Pages Build](https://github.com/5by5Media/international-phone-widget-for-jotform/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/5by5Media/international-phone-widget-for-jotform/actions)
+
 A custom [Jotform widget](https://www.jotform.com/developers/widgets/) that lets a
 form respondent pick their country from a searchable list and enter their phone
 number in that country's format, with live formatting and validation powered by
