@@ -1,0 +1,514 @@
+<!--
+  5by5 International Phone Widget for Jotform -- standalone demo
+  Copyright (c) 2026 5by5 Media
+  SPDX-License-Identifier: MIT
+
+  This page is NOT part of the deployed widget itself -- it exists purely
+  for taking screenshots and manually testing settings outside of Jotform.
+  It works by mocking the real JFCustomWidget bridge (which only actually
+  functions inside a Jotform-hosted iframe) just enough to fire the same
+  events widget.js expects, so widget.js and style.css run completely
+  unmodified here -- what you see is the real widget's real behavior, not
+  a reimplementation of it.
+
+  The Configuration panel below writes settings into the URL's query string
+  (one param per widget setting, same names as the real Jotform Additional
+  Parameters) and reloads the page -- so the address bar itself becomes a
+  shareable link to whatever configuration is currently shown.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Demo - 5by5 International Phone Widget for Jotform</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@29/dist/css/intlTelInput.css">
+<link rel="stylesheet" href="style.css">
+
+<style>
+  /* Demo-page chrome only -- none of this affects the widget itself,
+     which is styled entirely by style.css as usual. */
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 40px 20px;
+  }
+  .demo-page {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .demo-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 24px 28px 28px 28px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+  .demo-card h1 {
+    font-size: 18px;
+    margin: 0 0 6px 0;
+  }
+  .demo-card h2 {
+    font-size: 15px;
+    margin: 0 0 14px 0;
+  }
+  .demo-config-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .demo-config-heading h2 {
+    margin: 0 0 14px 0;
+  }
+  .demo-toggle-link {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 13px;
+    color: #6c9df0;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .demo-intro {
+    font-size: 14px;
+    color: #333333;
+    margin: 0 0 14px 0;
+    line-height: 1.5;
+  }
+  .demo-note {
+    font-size: 13px;
+    color: #666666;
+    margin: 0 0 20px 0;
+    line-height: 1.4;
+  }
+  .demo-field-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333333;
+    margin-bottom: 6px;
+  }
+  .demo-submit {
+    margin-top: 16px;
+    padding: 8px 16px;
+    font-size: 14px;
+    border: 1px solid #d7dbe0;
+    border-radius: 6px;
+    background: #f5f7fa;
+    cursor: pointer;
+  }
+  .demo-submit:hover {
+    background: #eceff2;
+  }
+  .demo-status {
+    margin-top: 20px;
+    padding: 12px;
+    background: #f5f7fa;
+    border-radius: 6px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 12.5px;
+    white-space: pre-wrap;
+    color: #333333;
+  }
+
+  /* --- Configuration form --- */
+  fieldset.demo-group {
+    border: 1px solid #e5e8eb;
+    border-radius: 8px;
+    margin: 0 0 16px 0;
+    padding: 12px 16px 16px 16px;
+  }
+  fieldset.demo-group legend {
+    font-size: 12.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #666666;
+    padding: 0 6px;
+  }
+  .demo-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 16px;
+    margin-bottom: 10px;
+  }
+  .demo-row:last-child {
+    margin-bottom: 0;
+  }
+  .demo-field {
+    flex: 1 1 160px;
+    min-width: 140px;
+  }
+  .demo-field label {
+    display: block;
+    font-size: 12.5px;
+    color: #333333;
+    margin-bottom: 4px;
+  }
+  .demo-field input[type="text"],
+  .demo-field input[type="number"],
+  .demo-field select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 8px;
+    font-size: 13px;
+    border: 1px solid #d7dbe0;
+    border-radius: 5px;
+  }
+  .demo-field input[type="color"] {
+    width: 44px;
+    height: 30px;
+    padding: 0;
+    border: 1px solid #d7dbe0;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .demo-checkbox {
+    flex: 1 1 160px;
+    min-width: 140px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .demo-checkbox label {
+    font-size: 12.5px;
+    color: #333333;
+  }
+  .demo-actions {
+    margin-top: 4px;
+  }
+  .demo-reset-link {
+    margin-left: 14px;
+    font-size: 13px;
+    color: #6c9df0;
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-page">
+
+  <div class="demo-card">
+    <h1>5by5 International Phone Widget for Jotform</h1>
+    <p class="demo-intro">
+      A Jotform widget that lets a form respondent pick their country from a
+      searchable list and enter their phone number in that country's format,
+      with live formatting and validation. (<a href="./">Documentation here</a>.)
+    </p>
+
+    <h2>Preview</h2>
+
+    <label class="demo-field-label" for="phone-input">Phone Number</label>
+    <div id="widget-root">
+      <input type="tel" id="phone-input" autocomplete="tel" placeholder="Phone number">
+      <div id="error-msg"></div>
+    </div>
+
+    <button type="button" id="demo-submit-btn" class="demo-submit">Simulate Submit</button>
+
+    <div class="demo-status" id="demo-status">Waiting for widget to initialize...</div>
+  </div>
+
+  <div class="demo-card">
+    <div class="demo-config-heading">
+      <h2>Configuration</h2>
+      <button type="button" id="toggle-config-btn" class="demo-toggle-link">Show</button>
+    </div>
+    <div id="config-body" style="display: none;">
+      <p class="demo-note">
+        Changing settings below reloads the page with them encoded in the URL --
+        so the address bar becomes a shareable link to this exact configuration.
+      </p>
+      <form id="config-form">
+
+      <fieldset class="demo-group">
+        <legend>Country selection</legend>
+        <div class="demo-row">
+          <div class="demo-field">
+            <label for="f-DefaultCountry" title="Country selected when the field first loads">DefaultCountry</label>
+            <input type="text" id="f-DefaultCountry" name="DefaultCountry" placeholder="us" title="Country selected when the field first loads">
+          </div>
+          <div class="demo-field">
+            <label for="f-PreferredCountries" title="Countries pinned to the top of the dropdown list">PreferredCountries</label>
+            <input type="text" id="f-PreferredCountries" name="PreferredCountries" placeholder="us,ca,gb" title="Countries pinned to the top of the dropdown list">
+          </div>
+        </div>
+        <div class="demo-row">
+          <div class="demo-field">
+            <label for="f-OnlyCountries" title="Restrict the dropdown to only these countries">OnlyCountries</label>
+            <input type="text" id="f-OnlyCountries" name="OnlyCountries" placeholder="(none)" title="Restrict the dropdown to only these countries">
+          </div>
+          <div class="demo-field">
+            <label for="f-ExcludeCountries" title="Remove specific countries from the dropdown, without restricting it to a fixed list">ExcludeCountries</label>
+            <input type="text" id="f-ExcludeCountries" name="ExcludeCountries" placeholder="(none)" title="Remove specific countries from the dropdown, without restricting it to a fixed list">
+          </div>
+        </div>
+        <div class="demo-row">
+          <div class="demo-checkbox">
+            <input type="checkbox" id="f-AllowDropdown" name="AllowDropdown" title="Show the country selector dropdown (uncheck to disable it entirely)">
+            <label for="f-AllowDropdown" title="Show the country selector dropdown (uncheck to disable it entirely)">AllowDropdown</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="demo-group">
+        <legend>Input &amp; validation</legend>
+        <div class="demo-row">
+          <div class="demo-field">
+            <label for="f-Placeholder" title="Placeholder text shown before a country is selected; an example number for the selected country takes over after that">Placeholder</label>
+            <input type="text" id="f-Placeholder" name="Placeholder" placeholder="(example number shown instead)" title="Placeholder text shown before a country is selected; an example number for the selected country takes over after that">
+          </div>
+          <div class="demo-field">
+            <label for="f-OutputFormat" title="Format of the phone number value once it's valid (E164 has no separators; INTERNATIONAL/NATIONAL are human-readable; RFC3966 is a tel: URI)">OutputFormat</label>
+            <select id="f-OutputFormat" name="OutputFormat" title="Format of the phone number value once it's valid (E164 has no separators; INTERNATIONAL/NATIONAL are human-readable; RFC3966 is a tel: URI)">
+              <option value="E164">E164</option>
+              <option value="INTERNATIONAL">INTERNATIONAL</option>
+              <option value="NATIONAL">NATIONAL</option>
+              <option value="RFC3966">RFC3966</option>
+            </select>
+          </div>
+        </div>
+        <div class="demo-row">
+          <div class="demo-checkbox">
+            <input type="checkbox" id="f-StrictInputValidation" name="StrictInputValidation" title="Block invalid characters and over-length input as the user types">
+            <label for="f-StrictInputValidation" title="Block invalid characters and over-length input as the user types">StrictInputValidation</label>
+          </div>
+          <div class="demo-checkbox">
+            <input type="checkbox" id="f-RequireMobile" name="RequireMobile" title="Only accept mobile numbers as valid (landlines will be rejected)">
+            <label for="f-RequireMobile" title="Only accept mobile numbers as valid (landlines will be rejected)">RequireMobile</label>
+          </div>
+        </div>
+        <div class="demo-row">
+          <div class="demo-checkbox">
+            <input type="checkbox" id="f-FormatAsYouType" name="FormatAsYouType" title="Live-format the number with spaces/dashes as the user types">
+            <label for="f-FormatAsYouType" title="Live-format the number with spaces/dashes as the user types">FormatAsYouType</label>
+          </div>
+          <div class="demo-checkbox">
+            <input type="checkbox" id="f-SeparateDialCode" name="SeparateDialCode" title="Show the country's dial code separated out next to the flag, instead of typed as part of the number">
+            <label for="f-SeparateDialCode" title="Show the country's dial code separated out next to the flag, instead of typed as part of the number">SeparateDialCode</label>
+          </div>
+          <div class="demo-checkbox">
+            <input type="checkbox" id="f-ShowFlags" name="ShowFlags" title="Show country flag icons in the selector (uncheck for text-only)">
+            <label for="f-ShowFlags" title="Show country flag icons in the selector (uncheck for text-only)">ShowFlags</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="demo-group">
+        <legend>Styling</legend>
+        <div class="demo-row">
+          <div class="demo-field">
+            <label for="f-AccentColor">AccentColor</label>
+            <input type="color" id="f-AccentColor" name="AccentColor">
+          </div>
+          <div class="demo-field">
+            <label for="f-BorderColor">BorderColor</label>
+            <input type="color" id="f-BorderColor" name="BorderColor">
+          </div>
+          <div class="demo-field">
+            <label for="f-ErrorColor">ErrorColor</label>
+            <input type="color" id="f-ErrorColor" name="ErrorColor">
+          </div>
+          <div class="demo-field">
+            <label for="f-TextColor">TextColor</label>
+            <input type="color" id="f-TextColor" name="TextColor">
+          </div>
+          <div class="demo-field">
+            <label for="f-BackgroundColor">BackgroundColor</label>
+            <input type="color" id="f-BackgroundColor" name="BackgroundColor">
+          </div>
+        </div>
+        <div class="demo-row">
+          <div class="demo-field">
+            <label for="f-FontFamily">FontFamily</label>
+            <input type="text" id="f-FontFamily" name="FontFamily" placeholder="(system default)">
+          </div>
+          <div class="demo-field">
+            <label for="f-FontSize">FontSize (px)</label>
+            <input type="number" id="f-FontSize" name="FontSize" placeholder="15">
+          </div>
+          <div class="demo-field">
+            <label for="f-FieldHeight">FieldHeight (px)</label>
+            <input type="number" id="f-FieldHeight" name="FieldHeight" placeholder="40">
+          </div>
+          <div class="demo-field">
+            <label for="f-BorderRadius">BorderRadius (px)</label>
+            <input type="number" id="f-BorderRadius" name="BorderRadius" placeholder="6">
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="demo-actions">
+        <button type="submit" class="demo-submit">Apply configuration</button>
+        <a href="?" class="demo-reset-link" id="reset-link">Reset to defaults</a>
+      </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ---------------------------------------------------------------
+  // Widget settings are read straight from the URL's query string --
+  // one query param per Jotform Additional Parameter, same names.
+  // The Configuration form above just edits this same query string
+  // and reloads, rather than trying to live-reconfigure the widget
+  // in place (widget.js only expects to run its setup once per page
+  // load, so a full reload keeps this simple and always correctly
+  // clean, with no risk of leftover state from a previous config).
+  // ---------------------------------------------------------------
+  var urlParams = new URLSearchParams(window.location.search);
+
+  // Settings whose ABSENCE from the URL should fall back to widget.js's
+  // own defaults -- these get skipped when not explicitly present, same
+  // as leaving a Jotform Additional Parameter blank.
+  var DEMO_SETTINGS = {};
+  [
+    'DefaultCountry', 'PreferredCountries', 'OnlyCountries', 'ExcludeCountries',
+    'Placeholder', 'OutputFormat', 'AccentColor', 'BorderColor', 'ErrorColor',
+    'TextColor', 'BackgroundColor', 'FontFamily', 'FontSize', 'FieldHeight',
+    'BorderRadius'
+  ].forEach(function (name) {
+    if (urlParams.has(name)) DEMO_SETTINGS[name] = urlParams.get(name);
+  });
+
+  // Boolean settings: only set an explicit "true"/"false" string when the
+  // URL actually specifies one -- same "absent means use widget.js's own
+  // default" rule as above, just handled separately since these come from
+  // checkboxes rather than plain text fields.
+  ['AllowDropdown', 'StrictInputValidation', 'RequireMobile', 'FormatAsYouType',
+   'SeparateDialCode', 'ShowFlags'].forEach(function (name) {
+    if (urlParams.has(name)) DEMO_SETTINGS[name] = urlParams.get(name);
+  });
+
+  // ---------------------------------------------------------------
+  // Pre-fill the Configuration form from the current URL, so the form
+  // always reflects whatever's actually in effect. Text/number/color
+  // fields fall back to widget.js's own documented default for display
+  // only; booleans fall back to each setting's real default state.
+  // ---------------------------------------------------------------
+  var TEXT_DEFAULTS = {
+    DefaultCountry: 'us', PreferredCountries: 'us,ca,gb', OnlyCountries: '',
+    ExcludeCountries: '', Placeholder: '', OutputFormat: 'E164',
+    AccentColor: '#6c9df0', BorderColor: '#d7dbe0', ErrorColor: '#e0402d',
+    TextColor: '#2b3242', BackgroundColor: '#ffffff', FontFamily: '',
+    FontSize: '15', FieldHeight: '40', BorderRadius: '6'
+  };
+  var BOOL_DEFAULTS = {
+    AllowDropdown: true, StrictInputValidation: true, RequireMobile: false,
+    FormatAsYouType: true, SeparateDialCode: true, ShowFlags: true
+  };
+
+  Object.keys(TEXT_DEFAULTS).forEach(function (name) {
+    var el = document.getElementById('f-' + name);
+    if (!el) return;
+    el.value = urlParams.has(name) ? urlParams.get(name) : TEXT_DEFAULTS[name];
+  });
+  Object.keys(BOOL_DEFAULTS).forEach(function (name) {
+    var el = document.getElementById('f-' + name);
+    if (!el) return;
+    var current = urlParams.has(name)
+      ? urlParams.get(name).toLowerCase() === 'true'
+      : BOOL_DEFAULTS[name];
+    el.checked = current;
+  });
+
+  // ---------------------------------------------------------------
+  // On submit: rebuild the query string from the form's current
+  // values and reload. Checkboxes always emit an explicit "true"/
+  // "false" (never omitted), since widget.js's getBoolSetting()
+  // treats "absent" as "use the default", not as "false" -- an
+  // unchecked box needs to say "false" out loud, not just vanish.
+  // Text/number/color fields are omitted when blank, so blank means
+  // "use widget.js's own default", matching how a blank Jotform
+  // Additional Parameter behaves.
+  // ---------------------------------------------------------------
+  document.getElementById('config-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var params = new URLSearchParams();
+
+    Object.keys(TEXT_DEFAULTS).forEach(function (name) {
+      var el = document.getElementById('f-' + name);
+      if (el && el.value.trim() !== '') params.set(name, el.value.trim());
+    });
+    Object.keys(BOOL_DEFAULTS).forEach(function (name) {
+      var el = document.getElementById('f-' + name);
+      if (el) params.set(name, el.checked ? 'true' : 'false');
+    });
+
+    window.location.search = params.toString();
+  });
+
+  // ---------------------------------------------------------------
+  // Show/hide the Configuration section (its explanatory note and the
+  // form together, as one unit -- the note refers to "settings below",
+  // so it shouldn't be visible on its own once those are hidden).
+  // Purely a display toggle -- it doesn't affect DEMO_SETTINGS or the
+  // widget itself in any way. Defaults to HIDDEN on every fresh page
+  // load (no persistence, kept intentionally simple), so a first-time
+  // visitor sees the working widget itself before being shown all of
+  // its configuration options.
+  // ---------------------------------------------------------------
+  var configBody = document.getElementById('config-body');
+  var toggleBtn = document.getElementById('toggle-config-btn');
+  toggleBtn.addEventListener('click', function () {
+    var hidden = configBody.style.display === 'none';
+    configBody.style.display = hidden ? '' : 'none';
+    toggleBtn.textContent = hidden ? 'Hide' : 'Show';
+  });
+
+  // ---------------------------------------------------------------
+  // Mock JFCustomWidget bridge. The real one is loaded from
+  // https://js.jotform.com/JotFormCustomWidget.min.js in widget.html,
+  // and only fires 'ready' after a handshake with an actual Jotform
+  // form iframe. This stands in for it here so widget.js's real code
+  // runs, reporting to the status panel below instead of a real form.
+  // ---------------------------------------------------------------
+  var submitCallback = null;
+  var statusEl = document.getElementById('demo-status');
+
+  function logStatus(label, data) {
+    statusEl.textContent = label + ':\n' + JSON.stringify(data, null, 2);
+  }
+
+  window.JFCustomWidget = {
+    subscribe: function (eventName, callback) {
+      if (eventName === 'ready') {
+        // Real Jotform fires this once its handshake completes; a short
+        // delay here just mimics that async timing.
+        setTimeout(function () {
+          callback({ value: '' }); // no pre-existing value, as if new
+        }, 50);
+      } else if (eventName === 'submit') {
+        submitCallback = callback;
+      }
+    },
+    getWidgetSetting: function (name) {
+      return DEMO_SETTINGS[name];
+    },
+    sendData: function (data) {
+      logStatus('sendData (live, as you type)', data);
+    },
+    sendSubmit: function (data) {
+      logStatus('sendSubmit (on Simulate Submit)', data);
+    },
+    requestFrameResize: function () {
+      // No-op here -- this only matters for sizing an actual Jotform iframe.
+    }
+  };
+
+  document.getElementById('demo-submit-btn').addEventListener('click', function () {
+    if (submitCallback) submitCallback();
+  });
+</script>
+
+<!-- intl-tel-input core (same version pin as widget.html) -->
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@29/dist/js/intlTelInput.min.js"></script>
+
+<!-- The real, unmodified widget logic -->
+<script src="widget.js"></script>
+
+</body>
+</html>
