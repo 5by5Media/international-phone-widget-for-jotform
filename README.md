@@ -14,9 +14,9 @@ below) - as the field's value.
 
 ## How it's hosted
 
-This repo is published via GitHub Pages, served directly from the repo root
-(no `docs` folder, no build step). The widget's registered **Widget IFrame
-URL** in Jotform points at:
+This repo is published via GitHub Pages, served from the `gh-pages` branch's
+repo root (no `docs` folder, no build step). The widget's registered **Widget
+IFrame URL** in Jotform points at:
 
 ```
 https://5by5media.github.io/international-phone-widget-for-jotform/widget.html
@@ -48,11 +48,11 @@ this is configurable rather than fixed, in case that ever changes.
 
 | File | Purpose |
 |---|---|
-| `widget.html` | The page Jotform's iframe loads |
-| `style.css` | The widget's own styling (theme variables, layout) |
-| `widget.js` | All widget logic (settings parsing, validation, Jotform bridge) |
-| `LICENSE` | MIT license text |
-| `README.md` | This file - also becomes the Pages homepage |
+| [`widget.html`](./widget.html) | The page Jotform's iframe loads |
+| [`style.css`](./style.css) | The widget's own styling (theme variables, layout) |
+| [`widget.js`](./widget.js) | All widget logic (settings parsing, validation, Jotform bridge) |
+| [`LICENSE`](./LICENSE) | MIT license text |
+| [`README.md`](./README.md) | This file - also becomes the Pages homepage |
 
 ## Widget settings
 
@@ -62,7 +62,7 @@ sensible default if left blank.
 
 | Setting | Type | Default | Description |
 |---|---|---|---|
-| `DefaultCountry` | ISO 3166-1 alpha-2 code | `us` | Country selected when the field first loads |
+| `DefaultCountry` | [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements) code | `us` | Country selected when the field first loads |
 | `PreferredCountries` | comma-separated ISO2 codes | `us,ca,gb` | Countries pinned to the top of the dropdown (no divider line is shown below the group - see note*) |
 | `OnlyCountries` | comma-separated ISO2 codes | *(none - no restriction)* | If set, restricts the dropdown to only these countries |
 | `ExcludeCountries` | comma-separated ISO2 codes | *(none)* | Removes specific countries from the dropdown, without restricting to a fixed list like `OnlyCountries` does |
