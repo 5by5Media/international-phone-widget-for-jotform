@@ -12,6 +12,17 @@ receives a single, fully-formatted, validated phone number - including the
 country's dial code by default (E.164, configurable - see `OutputFormat`
 below) - as the field's value.
 
+## Contents
+
+- [How it's hosted](#how-its-hosted)
+- [Files](#files)
+- [Widget settings](#widget-settings)
+  - [A note on `FormatAsYouType`](#a-note-on-formatasyoutype)
+  - [A note on `OutputFormat`](#a-note-on-outputformat)
+- [Dependency version pinning](#dependency-version-pinning)
+  - [Checklist for bumping this pin in the future](#checklist-for-bumping-this-pin-in-the-future)
+- [License](#license)
+
 ## How it's hosted
 
 This repo is published via GitHub Pages, served from the `gh-pages` branch's
