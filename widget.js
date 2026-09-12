@@ -166,12 +166,23 @@
     var placeholder = JFCustomWidget.getWidgetSetting('Placeholder');
     if (placeholder) input.placeholder = placeholder;
 
-    // Boolean settings come through as plain text ("true"/"false") from
-    // Jotform's widget settings screen, so parse them permissively.
+    // Boolean settings normally come through as plain text ("true"/"false")
+    // when typed directly into a Jotform Additional Parameter -- but if a
+    // "toggle"-style Field Type is used instead, it's not confirmed exactly
+    // what literal value that control sends (could plausibly be "1"/"0" or
+    // "yes"/"no" under the hood). Recognizing several common truthy/falsy
+    // representations here costs nothing and avoids a toggle silently doing
+    // nothing if it doesn't happen to emit the exact string "true"/"false".
+    var TRUTHY_VALUES = ['true', '1', 'yes', 'on'];
+    var FALSY_VALUES = ['false', '0', 'no', 'off'];
     function getBoolSetting(name, defaultValue) {
       var raw = JFCustomWidget.getWidgetSetting(name);
       if (raw === undefined || raw === null || raw.trim() === '') return defaultValue;
-      return raw.trim().toLowerCase() === 'true';
+      var normalized = raw.trim().toLowerCase();
+      if (TRUTHY_VALUES.indexOf(normalized) !== -1) return true;
+      if (FALSY_VALUES.indexOf(normalized) !== -1) return false;
+      // Unrecognized value -- fall back rather than guessing.
+      return defaultValue;
     }
 
     var strictInputValidation = getBoolSetting('StrictInputValidation', true);
