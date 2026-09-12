@@ -13,11 +13,20 @@
   // Friendly text for libphonenumber's ValidationError codes.
   // getValidationError() returns a string code, or null.
   var ERROR_MESSAGES = {
+    TOO_SHORT: "Phone number too short.",
+    TOO_LONG: "Phone number too long.",
     INVALID_COUNTRY_CODE: "Invalid country code.",
-    TOO_SHORT: "This number is too short.",
-    TOO_LONG: "This number is too long.",
-    INVALID_LENGTH: "Invalid phone number.",
-    IS_POSSIBLE_LOCAL_ONLY: "This number can't be dialed from outside the area.",
+    INVALID_LENGTH: "Incorrect phone number length.",
+    // Per libphonenumber's own definition, this means the digit count matches
+    // a bare local subscriber number for the selected country/region, but is
+    // missing something (like an area code) needed to reach it from anywhere
+    // outside that immediate local area -- not a "local vs. international
+    // format" issue, since the country itself is already set via the
+    // dropdown, not something the user types.
+    IS_POSSIBLE_LOCAL_ONLY: "This looks like a local number; it may be missing an area code.",
+    // Catch-all: right length, but not a number recognized as actually
+    // assigned/valid. libphonenumber doesn't track a more specific reason
+    // than this (e.g. there's no distinct "invalid area code" category).
     IS_POSSIBLE: "Invalid phone number.",
     DEFAULT: "Enter a phone number."
   };

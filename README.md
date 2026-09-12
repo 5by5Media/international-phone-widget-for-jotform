@@ -12,58 +12,57 @@ receives a single, fully-formatted, validated phone number - including the
 country's dial code by default (E.164, configurable - see `OutputFormat`
 below) - as the field's value.
 
+[![Widget preview](./assets/screenshot-widget-preview.png)](https://5by5media.github.io/international-phone-widget-for-jotform/demo.html)
+
+This README covers **setting up and configuring** the widget on a Jotform
+form. Looking to develop, deploy, or maintain this repository itself (branch
+structure, GitHub Pages internals, dependency version pinning, and so on)?
+See [`CONTRIBUTING.md`](./CONTRIBUTING.md) instead.
+
 ## Contents
 
-- [How it's hosted](#how-its-hosted)
-- [Files](#files)
+- [Setting this up in Jotform](#setting-this-up-in-jotform)
+- [Demo](#demo)
 - [Widget settings](#widget-settings)
   - [A note on `FormatAsYouType`](#a-note-on-formatasyoutype)
   - [A note on `OutputFormat`](#a-note-on-outputformat)
-- [Dependency version pinning](#dependency-version-pinning)
-  - [Checklist for bumping this pin in the future](#checklist-for-bumping-this-pin-in-the-future)
 - [License](#license)
 
-## How it's hosted
+## Setting this up in Jotform
 
-This repo is published via GitHub Pages, served from the `gh-pages` branch's
-repo root (no `docs` folder, no build step). The widget's registered **Widget
-IFrame URL** in Jotform points at:
+This is registered with Jotform as an **iFrame-type custom widget** - Jotform's
+own guide to registering one is at
+[jotform.com/developers/widgets](https://www.jotform.com/developers/widgets/),
+and covers the exact current click-path through their UI. The two things
+you'll need from this repo, regardless of exactly how Jotform's registration
+screen looks when you get there:
 
-```
-https://5by5media.github.io/international-phone-widget-for-jotform/widget.html
-```
+- **Widget IFrame URL:**
 
-`style.css` and `widget.js` are loaded by that file via ordinary relative
-paths, so they need to stay alongside it.
+  ```
+  https://5by5media.github.io/international-phone-widget-for-jotform/widget.html
+  ```
 
-This README itself becomes the site's homepage automatically - GitHub Pages'
-default Jekyll build includes the `jekyll-readme-index` plugin, which renders
-whichever `README.md` it finds as `index.html` when no other index file is
-present. No front matter, no extra files needed for that to happen.
+- **Additional Parameters:** add any setting you want the person building a
+  form with this widget to be able to configure - see the full list of
+  available parameters in [Widget settings](#widget-settings) below. Any
+  parameter you don't add here simply stays fixed at its documented default,
+  with no way for a form-builder to change it. (Use the exact, case-sensitive
+  name of each setting - e.g. `DefaultCountry` - as its parameter name.)
 
-This behavior can be overridden by adding a `_config.yml` at the repo root
-with a `readme_index` block, e.g.:
+Once registered, add it to a form from the Widgets toolbox in Form Builder,
+same as any other widget.
 
-```yaml
-readme_index:
-  enabled: false        # turn the auto-homepage behavior off entirely
-  remove_originals: false  # if true, README.md itself is excluded from the published site
-  with_frontmatter: false  # if true, only applies when README.md has its own front matter
-```
+## Demo
 
-None of this is currently needed here - no `_config.yml` exists in this repo,
-so the plugin runs with its defaults (shown above) - but it's worth knowing
-this is configurable rather than fixed, in case that ever changes.
+A standalone demo, hosted alongside the widget itself but outside of Jotform,
+for previewing settings live and taking screenshots:
 
-## Files
+https://5by5media.github.io/international-phone-widget-for-jotform/demo.html
 
-| File | Purpose |
-|---|---|
-| [`widget.html`](./widget.html) | The page Jotform's iframe loads |
-| [`style.css`](./style.css) | The widget's own styling (theme variables, layout) |
-| [`widget.js`](./widget.js) | All widget logic (settings parsing, validation, Jotform bridge) |
-| [`LICENSE`](./LICENSE) | MIT license text |
-| [`README.md`](./README.md) | This file - also becomes the Pages homepage |
+It has its own Configuration panel covering every setting listed below, so you
+can try out different combinations and see the result immediately, without
+needing to register or edit anything in Jotform first.
 
 ## Widget settings
 
@@ -140,45 +139,6 @@ governed separately by `formatAsYouType`, which is always on).
 - **`RFC3966`** - `tel:+1-702-418-1234`. A URI scheme, mainly useful if the
   value will be used directly in a `tel:` link rather than stored/displayed
   as a plain number.
-
-## Dependency version pinning
-
-The two `intl-tel-input` CDN references in
-`widget.html` (and the `utils.js` import inside
-`widget.js`) are pinned to **major version 29 only**
-(`intl-tel-input@29`, not an exact patch like `@29.2.0`). This means:
-
-- jsDelivr resolves the reference to the newest `29.x.y` release automatically,
-  picking up non-breaking fixes and refreshed libphonenumber metadata (e.g.
-  new area codes) without any action needed here.
-- It will **not** automatically jump to a new major version (e.g. `30.x`) if
-  one is released, since major versions are where intl-tel-input's changelog
-  indicates breaking changes happen. Moving to a new major should be a
-  deliberate, one-time update to this pin, with a quick check of the current
-  Options/Methods/Types docs first - see the checklist below for the kind of
-  thing that tends to change between majors.
-
-### Checklist for bumping this pin in the future
-
-intl-tel-input's breaking changes tend to follow a few recurring patterns -
-worth specifically checking for each of these before updating the version
-number, since none of them would be caught just by the widget failing to
-load:
-
-- **Published file paths** - confirm the CDN path structure (currently
-  `dist/js/...`, `dist/css/...`) against the target version's own docs;
-  it's changed before.
-- **`getValidationError()`'s return type** - confirm it's still returning the
-  string codes `widget.js`'s `ERROR_MESSAGES` table expects (e.g.
-  `"TOO_SHORT"`, `"INVALID_COUNTRY_CODE"`, or `null`); an unnoticed change
-  here fails silently (generic error text instead of specific), not loudly.
-- **Renamed/replaced options** - intl-tel-input has a history of swapping a
-  boolean option for a string-enum one (e.g. `allowDropdown` ->
-  `countrySelectorMode`), which passes no validation error if you keep using
-  the old name - it just silently does nothing.
-- **Input padding/layout behavior** - check whether the library still applies
-  its own left-padding automatically (an inline style, currently not
-  overridable from `style.css`), in case that changes again.
 
 ## License
 
