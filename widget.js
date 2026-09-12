@@ -245,7 +245,16 @@
       setTimeout(function () {
         try { iti.setNumber(existingValue); } catch (e) {}
         resize();
+        // Report the restored value once it's actually in place -- reporting
+        // any earlier would race ahead of setNumber and report the empty
+        // pre-restoration state instead.
+        reportToForm();
       }, 150);
+    } else {
+      // No existing value to restore -- report the starting (empty) state
+      // right away, rather than leaving the form (or this demo's status
+      // panel) waiting until the user's first interaction to hear anything.
+      reportToForm();
     }
 
     resize();
