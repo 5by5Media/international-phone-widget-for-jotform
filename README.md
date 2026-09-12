@@ -12,6 +12,8 @@ receives a single, fully-formatted, validated phone number - including the
 country's dial code by default (E.164, configurable - see `OutputFormat`
 below) - as the field's value.
 
+[![Widget preview](./assets/screenshot-widget-preview.png)](https://5by5media.github.io/international-phone-widget-for-jotform/demo.html)
+
 This README covers **setting up and configuring** the widget on a Jotform
 form. Looking to develop, deploy, or maintain this repository itself (branch
 structure, GitHub Pages internals, dependency version pinning, and so on)?
