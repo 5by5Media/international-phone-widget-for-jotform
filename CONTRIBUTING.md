@@ -86,6 +86,9 @@ comments inside `demo.html` itself for the mechanics.
 | [`README.md`](./README.md) | Setup/configuration docs - also becomes the Pages homepage |
 | [`CONTRIBUTING.md`](./CONTRIBUTING.md) | This file |
 | `.gitignore` / `.gitattributes` / `.editorconfig` | Repo hygiene - see [below](#repo-hygiene-files) |
+| [`assets/icon.svg`](./assets/icon.svg) | Source vector for the widget's icon |
+| [`assets/icon-80x80.png`](./assets/icon-80x80.png) | Rendered icon, for Jotform's widget registration |
+| [`assets/screenshot-widget-preview.png`](./assets/screenshot-widget-preview.png) | Used in README.md and for Jotform's widget registration |
 
 ## Dependency version pinning
 
