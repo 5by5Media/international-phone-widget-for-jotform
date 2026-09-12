@@ -12,12 +12,17 @@ receives a single, fully-formatted, validated phone number - including the
 country's dial code by default (E.164, configurable - see `OutputFormat`
 below) - as the field's value.
 
-[![Widget preview](./assets/screenshot-widget-preview.png)](https://5by5media.github.io/international-phone-widget-for-jotform/demo.html)
+<a href="https://5by5media.github.io/international-phone-widget-for-jotform/demo.html">
+  <img src="./assets/screenshot-widget-preview.png" alt="Widget preview" style="border: 1px solid #d0d0d0; border-radius: 6px; padding: 4px;">
+</a>
+
+*Screenshot of the widget in use - click to try the live demo.*
 
 This README covers **setting up and configuring** the widget on a Jotform
 form. Looking to develop, deploy, or maintain this repository itself (branch
 structure, GitHub Pages internals, dependency version pinning, and so on)?
-See [`CONTRIBUTING.md`](./CONTRIBUTING.md) instead.
+See [`CONTRIBUTING.md`](https://github.com/5by5Media/international-phone-widget-for-jotform/tree/gh-pages?tab=contributing-ov-file#contributing-ov-file)
+instead.
 
 ## Contents
 
@@ -58,7 +63,7 @@ same as any other widget.
 A standalone demo, hosted alongside the widget itself but outside of Jotform,
 for previewing settings live and taking screenshots:
 
-https://5by5media.github.io/international-phone-widget-for-jotform/demo.html
+<https://5by5media.github.io/international-phone-widget-for-jotform/demo.html>
 
 It has its own Configuration panel covering every setting listed below, so you
 can try out different combinations and see the result immediately, without
